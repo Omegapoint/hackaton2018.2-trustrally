@@ -1,7 +1,7 @@
 package se.omegapoint.trustrally;
 
 import se.omegapoint.trustrally.client.Client;
-import se.omegapoint.trustrally.client.PlayerType;
+import se.omegapoint.trustrally.common.PlayerType;
 import se.omegapoint.trustrally.server.Server;
 
 import static org.apache.commons.lang3.Validate.isTrue;

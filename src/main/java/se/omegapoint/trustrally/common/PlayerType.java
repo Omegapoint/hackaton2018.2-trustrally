@@ -1,10 +1,10 @@
-package se.omegapoint.trustrally.client;
+package se.omegapoint.trustrally.common;
 
 public enum PlayerType {
     DRIVER,
     NAVIGATOR;
 
-    public static PlayerType valueOf(byte b) {
+    public static PlayerType fromByte(byte b) {
         return values()[Byte.toUnsignedInt(b)];
     }
 

@@ -1,6 +1,6 @@
 package se.omegapoint.trustrally.io;
 
-import se.omegapoint.trustrally.client.PlayerType;
+import se.omegapoint.trustrally.common.PlayerType;
 
 import static org.apache.commons.lang3.Validate.isTrue;
 import static org.apache.commons.lang3.Validate.notNull;
@@ -15,7 +15,7 @@ public class ClientConnectMessage implements Message {
 
     ClientConnectMessage(byte[] bytes) {
         isTrue(MessageType.valueOf(bytes[0]) == MessageType.CLIENT_CONNECT);
-        this.playerType = PlayerType.valueOf(bytes[1]);
+        this.playerType = PlayerType.fromByte(bytes[1]);
     }
 
     @Override
