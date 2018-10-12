@@ -2,7 +2,7 @@ package se.omegapoint.trustrally;
 
 import org.lwjgl.Version;
 import se.omegapoint.trustrally.client.Client;
-import se.omegapoint.trustrally.client.ClientType;
+import se.omegapoint.trustrally.client.PlayerType;
 import se.omegapoint.trustrally.server.Server;
 
 import static org.apache.commons.lang3.Validate.isTrue;
@@ -18,8 +18,8 @@ public class TrustRally {
         if (args.length == 0) {
             application = new Server();
         } else {
-            ClientType clientType = ClientType.valueOf(args[0].toUpperCase());
-            application = new Client(clientType);
+            PlayerType playerType = PlayerType.valueOf(args[0].toUpperCase());
+            application = new Client(playerType);
         }
 
         new Thread(application).start();

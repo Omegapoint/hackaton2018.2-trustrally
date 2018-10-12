@@ -4,9 +4,9 @@ import static org.apache.commons.lang3.Validate.notNull;
 
 public class Client implements Runnable {
 
-    private final ClientType type;
+    private final PlayerType type;
 
-    public Client(ClientType type) {
+    public Client(PlayerType type) {
         this.type = notNull(type);
     }
 
