@@ -4,7 +4,7 @@ import static org.apache.commons.lang3.Validate.isTrue;
 
 public class DriverInputMessage implements Message {
 
-    private int key;
+    private final int key;
 
     public DriverInputMessage(int key) {
         this.key = key;
@@ -20,5 +20,9 @@ public class DriverInputMessage implements Message {
         return new byte[]{
                 MessageType.DRIVER_INPUT.toByte(),
                 (byte) key};
+    }
+
+    public int getKey() {
+        return key;
     }
 }

@@ -16,8 +16,6 @@ public class Server {
 
     private final DatagramSocket socket;
 
-    private ClientHandler driver;
-    private ClientHandler navigator;
     private DriverInput driverInput = new DriverInput();
     private NavigatorInput navigatorInput = new NavigatorInput();
 
@@ -29,21 +27,23 @@ public class Server {
         System.out.println("Running server...");
 
         acceptClients();
-        System.out.println("Both players connected!");
+        InputListener inputListener = new InputListener(socket, driverInput, navigatorInput);
 
         GameLogic gameLogic = new GameLogic();
         GameLoop gameLoop = new GameLoop(gameLogic, driverInput, navigatorInput);
 
-        new Thread(driver).start();
-        new Thread(navigator).start();
-
+        new Thread(inputListener).start();
         gameLoop.start();
+
+        inputListener.stop();
     }
 
     private void acceptClients() {
         int bufferSize = 256;
+        boolean driverConnected = false;
+        boolean navigatorConnected = false;
 
-        while (driver == null || navigator == null) {
+        while (!driverConnected || !navigatorConnected) {
             DatagramPacket packet = new DatagramPacket(new byte[bufferSize], bufferSize);
 
             try {
@@ -62,13 +62,15 @@ public class Server {
             switch (((ClientConnectMessage) message).getPlayerType()) {
                 case DRIVER:
                     System.out.println(String.format("Driver %s:%s connected.", packet.getAddress(), packet.getPort()));
-                    driver = new ClientHandler(socket, packet, driverInput);
+                    driverConnected = true;
                     break;
                 case NAVIGATOR:
                     System.out.println(String.format("Navigator %s:%s connected.", packet.getAddress(), packet.getPort()));
-                    navigator = new ClientHandler(socket, packet, navigatorInput);
+                    navigatorConnected = true;
                     break;
             }
         }
+
+        System.out.println("Both players connected!");
     }
 }

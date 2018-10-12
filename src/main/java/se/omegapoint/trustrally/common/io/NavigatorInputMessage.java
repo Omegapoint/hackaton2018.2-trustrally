@@ -4,7 +4,7 @@ import static org.apache.commons.lang3.Validate.isTrue;
 
 public class NavigatorInputMessage implements Message {
 
-    private int key;
+    private final int key;
 
     public NavigatorInputMessage(int key) {
         this.key = key;
@@ -20,5 +20,9 @@ public class NavigatorInputMessage implements Message {
         return new byte[]{
                 MessageType.NAVIGATOR_INPUT.toByte(),
                 (byte) key};
+    }
+
+    public int getKey() {
+        return key;
     }
 }

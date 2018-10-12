@@ -1,11 +1,13 @@
 package se.omegapoint.trustrally.client;
 
 import se.omegapoint.trustrally.client.graphics.Window;
+import se.omegapoint.trustrally.client.io.InputListener;
 import se.omegapoint.trustrally.client.io.Keyboard;
-import se.omegapoint.trustrally.client.io.MessageReceiver;
 import se.omegapoint.trustrally.common.PlayerType;
 import se.omegapoint.trustrally.common.io.ClientConnectMessage;
+import se.omegapoint.trustrally.common.io.DriverInputMessage;
 import se.omegapoint.trustrally.common.io.MessageSender;
+import se.omegapoint.trustrally.common.io.NavigatorInputMessage;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -23,7 +25,7 @@ public class Client {
     private final PlayerType playerType;
     private final Window window;
 
-    private final MessageReceiver input;
+    private final InputListener inputListener;
     private final MessageSender output;
     private final Keyboard keyboard;
 
@@ -32,16 +34,24 @@ public class Client {
         this.window = new Window(String.format(WINDOW_TITLE, playerType), WINDOW_WIDTH, WINDOW_HEIGHT);
 
         DatagramSocket socket = new DatagramSocket();
-        input = new MessageReceiver(socket);
+        inputListener = new InputListener(socket);
         output = new MessageSender(socket, serverAddress, serverPort);
-        keyboard = new Keyboard(output, playerType);
+        keyboard = new Keyboard(playerType == PlayerType.DRIVER ? this::driverInput : this::navigatorInput);
+    }
+
+    private void driverInput(int key) {
+        output.sendMessage(new DriverInputMessage(key));
+    }
+
+    private void navigatorInput(int key) {
+        output.sendMessage(new NavigatorInputMessage(key));
     }
 
     public void run() {
         System.out.println(String.format("Running %s client...", playerType));
 
         output.sendMessage(new ClientConnectMessage(playerType));
-        new Thread(input).start();
+        new Thread(inputListener).start();
 
         try {
             window.init(keyboard);
@@ -50,7 +60,7 @@ public class Client {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            input.stop();
+            inputListener.stop();
             window.terminate();
         }
     }

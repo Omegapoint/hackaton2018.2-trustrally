@@ -4,7 +4,7 @@ import se.omegapoint.trustrally.common.io.NavigatorInputMessage;
 
 public class NavigatorInput {
 
-    public void update(NavigatorInputMessage message) {
-        System.out.println("Received navigator input!");
+    void update(NavigatorInputMessage message) {
+        System.out.println(String.format("Received navigator input: %s", message.getKey()));
     }
 }

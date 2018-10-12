@@ -8,38 +8,21 @@ import se.omegapoint.trustrally.common.io.NavigatorInputMessage;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
-public class ClientHandler implements Runnable {
+public class InputListener implements Runnable {
 
     private final DatagramSocket socket;
-    private final InetAddress address;
-    private final int port;
-
     private final DriverInput driverInput;
     private final NavigatorInput navigatorInput;
 
     private boolean running = true;
 
-    public ClientHandler(DatagramSocket socket, DatagramPacket connectionPacket, DriverInput driverInput) {
-        this(socket, connectionPacket, driverInput, null);
-    }
-
-    public ClientHandler(DatagramSocket socket, DatagramPacket connectionPacket, NavigatorInput navigatorInput) {
-        this(socket, connectionPacket, null, navigatorInput);
-    }
-
-    private ClientHandler(DatagramSocket socket,
-                          DatagramPacket connectionPacket,
-                          DriverInput driverInput,
-                          NavigatorInput navigatorInput) {
+    InputListener(DatagramSocket socket, DriverInput driverInput, NavigatorInput navigatorInput) {
         this.socket = notNull(socket);
-        this.address = notNull(connectionPacket.getAddress());
-        this.port = notNull(connectionPacket.getPort());
-        this.driverInput = driverInput;
-        this.navigatorInput = navigatorInput;
+        this.driverInput = notNull(driverInput);
+        this.navigatorInput = notNull(navigatorInput);
     }
 
     @Override
@@ -51,30 +34,23 @@ public class ClientHandler implements Runnable {
 
             try {
                 socket.receive(packet);
-                System.out.println(String.format("Received packet: %s:%s", packet.getAddress(), packet.getPort()));
             } catch (IOException e) {
                 e.printStackTrace();
                 continue;
             }
 
             Message message = MessageParser.parse(packet.getData());
-            if (driverInput != null) {
+            if (message instanceof DriverInputMessage) {
                 driverInput.update((DriverInputMessage) message);
-            } else {
+            } else if (message instanceof NavigatorInputMessage) {
                 navigatorInput.update((NavigatorInputMessage) message);
+            } else {
+                throw new IllegalArgumentException("Invalid message type");
             }
         }
     }
 
-    public void stop() {
+    void stop() {
         running = false;
-    }
-
-    public InetAddress getAddress() {
-        return address;
-    }
-
-    public int getPort() {
-        return port;
     }
 }

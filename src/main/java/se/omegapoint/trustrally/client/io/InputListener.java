@@ -9,7 +9,7 @@ import java.net.DatagramSocket;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
-public class MessageReceiver implements Runnable {
+public class InputListener implements Runnable {
 
     private static final int BUFFER_SIZE = 256;
 
@@ -17,7 +17,7 @@ public class MessageReceiver implements Runnable {
 
     private boolean running = true;
 
-    public MessageReceiver(DatagramSocket socket) {
+    public InputListener(DatagramSocket socket) {
         this.socket = notNull(socket);
     }
 
