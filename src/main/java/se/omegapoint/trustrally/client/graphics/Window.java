@@ -3,6 +3,7 @@ package se.omegapoint.trustrally.client.graphics;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import se.omegapoint.trustrally.client.io.Keyboard;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -23,7 +24,7 @@ public class Window {
         this.height = height;
     }
 
-    public void init() {
+    public void init(Keyboard keyboard) {
         GLFWErrorCallback.createPrint(System.err).set();
 
         if (!glfwInit()) {
@@ -39,7 +40,7 @@ public class Window {
             throw new RuntimeException("Failed to create the GLFW window");
         }
 
-        // TODO: glfwSetKeyCallback(windowHandle, ...);
+        glfwSetKeyCallback(windowHandle, keyboard);
 
         GLFWVidMode videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         int x = (videoMode.width() - width) / 2;

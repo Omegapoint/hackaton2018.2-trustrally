@@ -9,9 +9,9 @@ public class MessageParser {
             case CLIENT_CONNECT:
                 return new ClientConnectMessage(bytes);
             case DRIVER_INPUT:
-                // TODO: Implement!
+                return new DriverInputMessage(bytes);
             case NAVIGATOR_INPUT:
-                // TODO: Implement!
+                return new NavigatorInputMessage(bytes);
             default:
                 throw new IllegalArgumentException();
         }

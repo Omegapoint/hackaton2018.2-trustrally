@@ -5,9 +5,9 @@ import se.omegapoint.trustrally.server.NavigatorInput;
 
 import static org.apache.commons.lang3.Validate.notNull;
 
-public class GameLoop implements Runnable {
+public class GameLoop {
 
-    private static final long FRAME_TIME_MS = 10_000; // 100 FPS
+    private static final long FRAME_TIME_MS = 10; // 100 FPS
 
     private final GameLogic gameLogic;
     private final DriverInput driverInput;
@@ -21,8 +21,7 @@ public class GameLoop implements Runnable {
         this.navigatorInput = notNull(navigatorInput);
     }
 
-    @Override
-    public void run() {
+    public void start() {
         while (running) {
             long startTime = System.currentTimeMillis();
 
@@ -36,6 +35,7 @@ public class GameLoop implements Runnable {
             long frameDuration = currentTime - startTime;
 
             try {
+                // TODO: Change implementation...
                 Thread.sleep(FRAME_TIME_MS - frameDuration);
             } catch (InterruptedException e) {
                 e.printStackTrace();

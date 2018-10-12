@@ -1,8 +1,10 @@
 package se.omegapoint.trustrally.client;
 
 import se.omegapoint.trustrally.client.graphics.Window;
+import se.omegapoint.trustrally.client.io.Keyboard;
 import se.omegapoint.trustrally.client.io.MessageReceiver;
 import se.omegapoint.trustrally.common.PlayerType;
+import se.omegapoint.trustrally.common.io.ClientConnectMessage;
 import se.omegapoint.trustrally.common.io.MessageSender;
 
 import java.net.DatagramSocket;
@@ -23,6 +25,7 @@ public class Client implements Runnable {
 
     private final MessageReceiver input;
     private final MessageSender output;
+    private final Keyboard keyboard;
 
     public Client(PlayerType playerType, InetAddress serverAddress, int serverPort) throws SocketException {
         this.playerType = notNull(playerType);
@@ -31,16 +34,18 @@ public class Client implements Runnable {
         DatagramSocket socket = new DatagramSocket();
         input = new MessageReceiver(socket);
         output = new MessageSender(socket, serverAddress, serverPort);
+        keyboard = new Keyboard(output, playerType);
     }
 
     @Override
     public void run() {
         System.out.println(String.format("Running %s client...", playerType));
 
+        output.sendMessage(new ClientConnectMessage(playerType));
         new Thread(input).start();
 
         try {
-            window.init();
+            window.init(keyboard);
             renderLoop();
             window.release();
         } catch (Exception e) {

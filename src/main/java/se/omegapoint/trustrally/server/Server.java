@@ -30,19 +30,25 @@ public class Server implements Runnable {
         System.out.println("Running server...");
 
         acceptClients();
+        System.out.println("Both players connected!");
 
         GameLogic gameLogic = new GameLogic();
         GameLoop gameLoop = new GameLoop(gameLogic, driverInput, navigatorInput);
-        new Thread(gameLoop).start();
+
+        new Thread(driver).start();
+        new Thread(navigator).start();
+
+        gameLoop.start();
     }
 
     private void acceptClients() {
         int bufferSize = 256;
 
-        while (driver == null && navigator == null) {
+        while (driver == null || navigator == null) {
             DatagramPacket packet = new DatagramPacket(new byte[bufferSize], bufferSize);
 
             try {
+                System.out.println("Waiting for client...");
                 socket.receive(packet);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -56,9 +62,11 @@ public class Server implements Runnable {
 
             switch (((ClientConnectMessage) message).getPlayerType()) {
                 case DRIVER:
+                    System.out.println(String.format("Driver %s:%s connected.", packet.getAddress(), packet.getPort()));
                     driver = new ClientHandler(socket, packet, driverInput);
                     break;
                 case NAVIGATOR:
+                    System.out.println(String.format("Navigator %s:%s connected.", packet.getAddress(), packet.getPort()));
                     navigator = new ClientHandler(socket, packet, navigatorInput);
                     break;
             }

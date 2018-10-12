@@ -4,13 +4,21 @@ import static org.apache.commons.lang3.Validate.isTrue;
 
 public class NavigatorInputMessage implements Message {
 
+    private int key;
+
+    public NavigatorInputMessage(int key) {
+        this.key = key;
+    }
+
     NavigatorInputMessage(byte[] bytes) {
         isTrue(MessageType.fromByte(bytes[0]) == MessageType.NAVIGATOR_INPUT);
+        this.key = Byte.toUnsignedInt(bytes[1]);
     }
 
     @Override
     public byte[] getBytes() {
         return new byte[]{
-                MessageType.NAVIGATOR_INPUT.toByte()};
+                MessageType.NAVIGATOR_INPUT.toByte(),
+                (byte) key};
     }
 }

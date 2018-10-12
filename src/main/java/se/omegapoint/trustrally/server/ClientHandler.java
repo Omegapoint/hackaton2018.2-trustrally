@@ -40,8 +40,6 @@ public class ClientHandler implements Runnable {
         this.port = notNull(connectionPacket.getPort());
         this.driverInput = driverInput;
         this.navigatorInput = navigatorInput;
-
-        System.out.println(String.format("Client %s connected.", address.toString()));
     }
 
     @Override
@@ -53,6 +51,7 @@ public class ClientHandler implements Runnable {
 
             try {
                 socket.receive(packet);
+                System.out.println(String.format("Received packet: %s:%s", packet.getAddress(), packet.getPort()));
             } catch (IOException e) {
                 e.printStackTrace();
                 continue;
