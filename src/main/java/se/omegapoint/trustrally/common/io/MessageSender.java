@@ -1,6 +1,4 @@
-package se.omegapoint.trustrally.client.io;
-
-import se.omegapoint.trustrally.common.io.Message;
+package se.omegapoint.trustrally.common.io;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -12,18 +10,18 @@ import static org.apache.commons.lang3.Validate.notNull;
 public class MessageSender {
 
     private final DatagramSocket socket;
-    private final InetAddress serverAddress;
-    private final int serverPort;
+    private final InetAddress address;
+    private final int port;
 
-    public MessageSender(DatagramSocket socket, InetAddress serverAddress, int serverPort) {
+    public MessageSender(DatagramSocket socket, InetAddress address, int port) {
         this.socket = notNull(socket);
-        this.serverAddress = notNull(serverAddress);
-        this.serverPort = notNull(serverPort);
+        this.address = notNull(address);
+        this.port = notNull(port);
     }
 
     public void sendMessage(Message message) {
         byte[] buffer = message.getBytes();
-        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, serverAddress, serverPort);
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
 
         try {
             socket.send(packet);

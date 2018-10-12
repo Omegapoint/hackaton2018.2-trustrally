@@ -1,50 +1,66 @@
 package se.omegapoint.trustrally.server;
 
+import se.omegapoint.trustrally.common.io.ClientConnectMessage;
+import se.omegapoint.trustrally.common.io.Message;
+import se.omegapoint.trustrally.common.io.MessageParser;
+import se.omegapoint.trustrally.server.game.GameLogic;
+import se.omegapoint.trustrally.server.game.GameLoop;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
 
 public class Server implements Runnable {
 
-    DatagramSocket connectionSocket;
-    private boolean running;
-    private byte[] buf = new byte[256];
+    private static final int PORT = 4555;
 
-    public Server() {
-        try {
-            connectionSocket = new DatagramSocket(4555); //TODO: Add server address...
-        } catch (SocketException e) {
-            System.out.println("Connection failed...");
-            e.printStackTrace();
-        }
+    private final DatagramSocket socket;
+
+    private ClientHandler driver;
+    private ClientHandler navigator;
+    private DriverInput driverInput = new DriverInput();
+    private NavigatorInput navigatorInput = new NavigatorInput();
+
+    public Server() throws IOException {
+        socket = new DatagramSocket(PORT);
     }
 
     @Override
     public void run() {
-        running = true;
+        System.out.println("Running server...");
 
-        while (running) {
+        acceptClients();
+
+        GameLogic gameLogic = new GameLogic();
+        GameLoop gameLoop = new GameLoop(gameLogic, driverInput, navigatorInput);
+        new Thread(gameLoop).start();
+    }
+
+    private void acceptClients() {
+        int bufferSize = 256;
+
+        while (driver == null && navigator == null) {
+            DatagramPacket packet = new DatagramPacket(new byte[bufferSize], bufferSize);
+
             try {
-                System.out.println("Running server...");
-                DatagramPacket packet = new DatagramPacket(buf, buf.length);
-                connectionSocket.receive(packet);
-                InetAddress clientAddress = packet.getAddress();
-                int clientPort = packet.getPort();
-                packet = new DatagramPacket(buf, buf.length, clientAddress, clientPort);
-
-                String clientData = new String(packet.getData(), 0, packet.getLength());
-
-                if (clientData.equals("end")) { //TODO: Implement MessageType
-                    running = false;
-                    continue;
-                }
-
-                connectionSocket.send(packet);
-
+                socket.receive(packet);
             } catch (IOException e) {
                 e.printStackTrace();
+                continue;
+            }
+
+            Message message = MessageParser.parse(packet.getData());
+            if (!(message instanceof ClientConnectMessage)) {
+                continue;
+            }
+
+            switch (((ClientConnectMessage) message).getPlayerType()) {
+                case DRIVER:
+                    driver = new ClientHandler(socket, packet, driverInput);
+                    break;
+                case NAVIGATOR:
+                    navigator = new ClientHandler(socket, packet, navigatorInput);
+                    break;
             }
         }
     }

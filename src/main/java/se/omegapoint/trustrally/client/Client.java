@@ -2,8 +2,8 @@ package se.omegapoint.trustrally.client;
 
 import se.omegapoint.trustrally.client.graphics.Window;
 import se.omegapoint.trustrally.client.io.MessageReceiver;
-import se.omegapoint.trustrally.client.io.MessageSender;
 import se.omegapoint.trustrally.common.PlayerType;
+import se.omegapoint.trustrally.common.io.MessageSender;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;

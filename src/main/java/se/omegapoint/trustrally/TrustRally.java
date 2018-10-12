@@ -12,19 +12,19 @@ import static org.apache.commons.lang3.Validate.isTrue;
 public class TrustRally {
 
     public static void main(String[] args) {
-        if (args.length == 0) {
-            startServer();
-        } else {
-            try {
+        try {
+            if (args.length == 0) {
+                startServer();
+            } else {
                 startClient(args);
-            } catch (IOException e) {
-                System.err.println("Failed to start client");
-                e.printStackTrace();
             }
+        } catch (IOException e) {
+            System.err.println("Failed to start client");
+            e.printStackTrace();
         }
     }
 
-    private static void startServer() {
+    private static void startServer() throws IOException {
         Server server = new Server();
         new Thread(server).start();
     }

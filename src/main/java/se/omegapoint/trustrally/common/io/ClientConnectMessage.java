@@ -24,4 +24,8 @@ public class ClientConnectMessage implements Message {
                 MessageType.CLIENT_CONNECT.toByte(),
                 playerType.toByte()};
     }
+
+    public PlayerType getPlayerType() {
+        return playerType;
+    }
 }
