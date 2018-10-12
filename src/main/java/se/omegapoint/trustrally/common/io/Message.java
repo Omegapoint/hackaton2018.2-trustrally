@@ -1,4 +1,4 @@
-package se.omegapoint.trustrally.io;
+package se.omegapoint.trustrally.common.io;
 
 public interface Message {
 

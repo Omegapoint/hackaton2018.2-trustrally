@@ -1,4 +1,4 @@
-package se.omegapoint.trustrally.io;
+package se.omegapoint.trustrally.common.io;
 
 import se.omegapoint.trustrally.common.PlayerType;
 
@@ -14,7 +14,7 @@ public class ClientConnectMessage implements Message {
     }
 
     ClientConnectMessage(byte[] bytes) {
-        isTrue(MessageType.valueOf(bytes[0]) == MessageType.CLIENT_CONNECT);
+        isTrue(MessageType.fromByte(bytes[0]) == MessageType.CLIENT_CONNECT);
         this.playerType = PlayerType.fromByte(bytes[1]);
     }
 
