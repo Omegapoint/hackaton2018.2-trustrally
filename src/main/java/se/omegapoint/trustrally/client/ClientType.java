@@ -2,5 +2,13 @@ package se.omegapoint.trustrally.client;
 
 public enum ClientType {
     DRIVER,
-    NAVIGATOR
+    NAVIGATOR;
+
+    public static ClientType valueOf(byte b) {
+        return values()[Byte.toUnsignedInt(b)];
+    }
+
+    public byte toByte() {
+        return (byte) ordinal();
+    }
 }
