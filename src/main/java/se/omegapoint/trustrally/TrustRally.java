@@ -19,14 +19,12 @@ public class TrustRally {
                 startClient(args);
             }
         } catch (IOException e) {
-            System.err.println("Failed to start client");
             e.printStackTrace();
         }
     }
 
     private static void startServer() throws IOException {
-        Server server = new Server();
-        new Thread(server).start();
+        new Server().run();
     }
 
     private static void startClient(String[] args) throws IOException {
@@ -36,7 +34,6 @@ public class TrustRally {
         InetAddress serverAddress = InetAddress.getByName(args[1]);
         int serverPort = Integer.parseInt(args[2]);
 
-        Client client = new Client(playerType, serverAddress, serverPort);
-        new Thread(client).start();
+        new Client(playerType, serverAddress, serverPort).run();
     }
 }

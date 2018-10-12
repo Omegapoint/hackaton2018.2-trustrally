@@ -14,7 +14,7 @@ import java.net.SocketException;
 import static org.apache.commons.lang3.Validate.notNull;
 import static org.lwjgl.opengl.GL11.*;
 
-public class Client implements Runnable {
+public class Client {
 
     private static final String WINDOW_TITLE = "TrustRally Client - %s";
     private static final int WINDOW_WIDTH = 640;
@@ -37,7 +37,6 @@ public class Client implements Runnable {
         keyboard = new Keyboard(output, playerType);
     }
 
-    @Override
     public void run() {
         System.out.println(String.format("Running %s client...", playerType));
 

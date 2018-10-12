@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
-public class Server implements Runnable {
+public class Server {
 
     private static final int PORT = 4555;
 
@@ -25,7 +25,6 @@ public class Server implements Runnable {
         socket = new DatagramSocket(PORT);
     }
 
-    @Override
     public void run() {
         System.out.println("Running server...");
 
