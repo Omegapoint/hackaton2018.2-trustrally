@@ -1,6 +1,5 @@
 package se.omegapoint.trustrally;
 
-import org.lwjgl.Version;
 import se.omegapoint.trustrally.client.Client;
 import se.omegapoint.trustrally.client.PlayerType;
 import se.omegapoint.trustrally.server.Server;
@@ -12,16 +11,21 @@ public class TrustRally {
     public static void main(String[] args) {
         isTrue(args.length <= 1);
 
-        System.out.println(String.format("LWJGL version: %s", Version.getVersion()));
-
-        Runnable application;
         if (args.length == 0) {
-            application = new Server();
+            startServer();
         } else {
             PlayerType playerType = PlayerType.valueOf(args[0].toUpperCase());
-            application = new Client(playerType);
+            startClient(playerType);
         }
+    }
 
-        new Thread(application).start();
+    private static void startServer() {
+        Server server = new Server();
+        new Thread(server).start();
+    }
+
+    private static void startClient(PlayerType playerType) {
+        Client client = new Client(playerType);
+        new Thread(client).start();
     }
 }
