@@ -1,6 +1,6 @@
 package se.omegapoint.trustrally.server;
 
-import se.omegapoint.trustrally.common.io.ClientConnectMessage;
+import se.omegapoint.trustrally.common.io.messages.ClientConnectMessage;
 import se.omegapoint.trustrally.common.io.Message;
 import se.omegapoint.trustrally.common.io.MessageParser;
 import se.omegapoint.trustrally.server.game.GameLogic;

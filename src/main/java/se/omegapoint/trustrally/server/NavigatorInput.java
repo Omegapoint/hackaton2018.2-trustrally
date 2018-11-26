@@ -1,6 +1,6 @@
 package se.omegapoint.trustrally.server;
 
-import se.omegapoint.trustrally.common.io.NavigatorInputMessage;
+import se.omegapoint.trustrally.common.io.messages.NavigatorInputMessage;
 
 public class NavigatorInput {
 

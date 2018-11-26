@@ -1,6 +1,6 @@
 package se.omegapoint.trustrally.server;
 
-import se.omegapoint.trustrally.common.io.DriverInputMessage;
+import se.omegapoint.trustrally.common.io.messages.DriverInputMessage;
 
 public class DriverInput {
 

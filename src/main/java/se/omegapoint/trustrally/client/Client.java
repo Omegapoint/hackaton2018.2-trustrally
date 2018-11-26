@@ -4,10 +4,10 @@ import se.omegapoint.trustrally.client.graphics.Window;
 import se.omegapoint.trustrally.client.io.InputListener;
 import se.omegapoint.trustrally.client.io.Keyboard;
 import se.omegapoint.trustrally.common.PlayerType;
-import se.omegapoint.trustrally.common.io.ClientConnectMessage;
-import se.omegapoint.trustrally.common.io.DriverInputMessage;
 import se.omegapoint.trustrally.common.io.MessageSender;
-import se.omegapoint.trustrally.common.io.NavigatorInputMessage;
+import se.omegapoint.trustrally.common.io.messages.ClientConnectMessage;
+import se.omegapoint.trustrally.common.io.messages.DriverInputMessage;
+import se.omegapoint.trustrally.common.io.messages.NavigatorInputMessage;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;

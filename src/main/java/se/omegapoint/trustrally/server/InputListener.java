@@ -1,9 +1,9 @@
 package se.omegapoint.trustrally.server;
 
-import se.omegapoint.trustrally.common.io.DriverInputMessage;
+import se.omegapoint.trustrally.common.io.messages.DriverInputMessage;
 import se.omegapoint.trustrally.common.io.Message;
 import se.omegapoint.trustrally.common.io.MessageParser;
-import se.omegapoint.trustrally.common.io.NavigatorInputMessage;
+import se.omegapoint.trustrally.common.io.messages.NavigatorInputMessage;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

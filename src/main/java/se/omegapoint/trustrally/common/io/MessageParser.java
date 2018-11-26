@@ -1,5 +1,9 @@
 package se.omegapoint.trustrally.common.io;
 
+import se.omegapoint.trustrally.common.io.messages.ClientConnectMessage;
+import se.omegapoint.trustrally.common.io.messages.DriverInputMessage;
+import se.omegapoint.trustrally.common.io.messages.NavigatorInputMessage;
+
 public class MessageParser {
 
     public static Message parse(byte[] bytes) {
